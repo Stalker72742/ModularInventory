@@ -23,7 +23,7 @@ public:
 	void SelectItem();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<UObject*> GetItems() { return Items;}
+	TArray<UObject*> GetItems() const { return Items;}
 	
 protected:
 
