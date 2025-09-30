@@ -38,7 +38,7 @@ public class ModularInventory : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore",
+				"SlateCore", "ItemSystem",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
