@@ -18,6 +18,11 @@
 			"Name": "ModularInventory",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "ModularItemSys",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	]
 }

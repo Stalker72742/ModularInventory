@@ -7,9 +7,7 @@
 #include "InventoryComp.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemInHandsChanged, UItemObject*, NewItemInHands);
 
-class UItemObject;
 class UInventorySlot;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -21,18 +19,18 @@ public:
 	UInventoryComp();
 
 	UFUNCTION(BlueprintCallable)
-	bool AddItem(UItemObject* Item);
+	bool AddItem(UObject* Item);
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void SelectItem(int32 InItemIndex);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<UItemObject*> GetItems() const { return Items;}
+	TArray<UObject*> GetItems() const { return Items;}
 	
 protected:
 
 	UPROPERTY()
-	TArray<UItemObject*> Items;
+	TArray<UObject*> Items;
 
 	UPROPERTY(EditAnywhere, Instanced, BlueprintReadOnly)
 	TArray<TObjectPtr<UInventorySlot>> Slots;
@@ -80,6 +78,4 @@ public:
 	// const getters
 public:
 	// event dispatchers
-	UPROPERTY(BlueprintAssignable, Category="Events")
-	FOnItemInHandsChanged OnItemInHandsChanged;
 };
