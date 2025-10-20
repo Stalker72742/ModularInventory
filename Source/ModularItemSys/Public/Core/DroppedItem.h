@@ -17,12 +17,25 @@ public:
 	ADroppedItem();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Component)
+	USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Component)
 	USkeletalMeshComponent* ItemMesh;
 
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Component)
+	UBillboardComponent* Billboard;
+#endif
+	
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Instanced, Category = Data)
 	UItemObject* Item;
+
+protected:
+
+	UFUNCTION(BlueprintCallable, Category="Service")
+	void LoadMeshSync();
 
 public:
 	virtual void BeginPlay() override;

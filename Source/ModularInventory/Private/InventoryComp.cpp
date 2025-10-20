@@ -9,9 +9,7 @@
 UInventoryComp::UInventoryComp()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	UInventorySlot* defaultSlot = NewObject<UInventorySlot>();
-	defaultSlot->SlotTag = FGameplayTag::RequestGameplayTag(FName("Inventory.SlotTypes.WeaponSlot"));
-	Slots.Add(defaultSlot);
+	
 }
 
 bool UInventoryComp::AddItem(UObject* Item)

@@ -2,3 +2,8 @@
 
 
 #include "Core/ItemObject.h"
+
+UItemObject::UItemObject(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+	
+}

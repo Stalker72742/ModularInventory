@@ -6,11 +6,26 @@
 #include "UObject/Object.h"
 #include "ItemObject.generated.h"
 
+class UItemData;
 /**
  * 
  */
-UCLASS()
+UCLASS(EditInlineNew)
 class MODULARITEMSYS_API UItemObject : public UObject
 {
 	GENERATED_BODY()
+public:
+
+	UItemObject(const FObjectInitializer& ObjectInitializer);
+
+protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
+	UItemData* DataAsset;
+
+
+public:
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = Getter)
+	UItemData* GetDataAsset() const { return DataAsset; }
 };

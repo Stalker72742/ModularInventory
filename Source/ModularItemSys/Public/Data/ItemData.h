@@ -70,6 +70,12 @@ class MODULARITEMSYS_API UItemData : public UPrimaryDataAsset
 public:
 	UItemData();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visuals")
+	FName ItemName;	
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visuals")
+	TSoftObjectPtr<USkeletalMesh> ItemMesh;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(BaseStruct=ItemParamBase), Category="ItemParams")
 	TMap<FGameplayTag, FInstancedStruct> DynamicItemParams;
 
