@@ -5,6 +5,7 @@
 
 #include "InventorySlot.h"
 #include "Net/UnrealNetwork.h"
+#include "ModularItemSys/Public/Core/ItemObject.h"
 
 UInventoryComp::UInventoryComp()
 {
@@ -16,6 +17,23 @@ bool UInventoryComp::AddItem(UObject* Item)
 {
 	Items.Add(Item);
 	return true;
+}
+
+bool UInventoryComp::AddItemToActiveSlot(UItemObject* InItem)
+{
+	for (TObjectPtr<UInventorySlot> inventorySlot : Slots)
+	{
+		if (inventorySlot.Get())
+		{
+			if (!inventorySlot.Get()->GetItemObject())
+			{
+				inventorySlot.Get()->SetItemObject(InItem);
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void UInventoryComp::OnRep_CurrentActorItem()

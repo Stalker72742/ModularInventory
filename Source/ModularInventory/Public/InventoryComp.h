@@ -7,7 +7,7 @@
 #include "InventoryComp.generated.h"
 
 
-
+class UItemObject;
 class UInventorySlot;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -18,15 +18,6 @@ class MODULARINVENTORY_API UInventoryComp : public UActorComponent
 public:
 	UInventoryComp();
 
-	UFUNCTION(BlueprintCallable)
-	bool AddItem(UObject* Item);
-
-	UFUNCTION(Server, Reliable, BlueprintCallable)
-	void SelectItem(int32 InItemIndex);
-
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<UObject*> GetItems() const { return Items;}
-	
 protected:
 
 	UPROPERTY()
@@ -71,9 +62,19 @@ public:
 public:
 	// override from Interfaces
 public:
-	// public variables (try to not use them)
-public:
 	// public functions
+
+	UFUNCTION(BlueprintCallable)
+	bool AddItem(UObject* Item);
+
+	UFUNCTION(BlueprintCallable, Category="Setters")
+	bool AddItemToActiveSlot(UItemObject* InItem);
+
+	UFUNCTION(Server, Reliable, BlueprintCallable)
+	void SelectItem(int32 InItemIndex);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<UObject*> GetItems() const { return Items;}
 public:
 	// const getters
 public:

@@ -26,7 +26,8 @@ public class ModularInventory : ModuleRules
 			new string[]
 			{
 				"Core",
-				"GameplayTags"
+				"GameplayTags",
+				"ModularItemSys"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
