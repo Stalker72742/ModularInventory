@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UItemObject* SlotItem;
 
+public:
+
+	virtual bool IsSupportedForNetworking() const override { return true; }
 
 public:
 

@@ -4,6 +4,7 @@
 #include "InventoryComp.h"
 
 #include "InventorySlot.h"
+#include "Engine/ActorChannel.h"
 #include "Net/UnrealNetwork.h"
 #include "ModularItemSys/Public/Core/ItemObject.h"
 
@@ -13,21 +14,21 @@ UInventoryComp::UInventoryComp()
 	
 }
 
-bool UInventoryComp::AddItem(UObject* Item)
+bool UInventoryComp::AddItem(UItemObject* InItem)
 {
-	Items.Add(Item);
+	Items.Add(InItem);
 	return true;
 }
 
 bool UInventoryComp::AddItemToActiveSlot(UItemObject* InItem)
 {
-	for (TObjectPtr<UInventorySlot> inventorySlot : Slots)
+	for (UInventorySlot* inventorySlot : Slots)
 	{
-		if (inventorySlot.Get())
+		if (inventorySlot)
 		{
-			if (!inventorySlot.Get()->GetItemObject())
+			if (!inventorySlot->GetItemObject())
 			{
-				inventorySlot.Get()->SetItemObject(InItem);
+				inventorySlot->SetItemObject(InItem);
 				return true;
 			}
 		}
@@ -60,6 +61,20 @@ void UInventoryComp::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UInventoryComp, CurrentItemIndex);
+	DOREPLIFETIME(UInventoryComp, Slots);
+}
+
+bool UInventoryComp::ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch,
+	FReplicationFlags* RepFlags)
+{
+	bool result = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+	for (UInventorySlot* inventorySlot : Slots)
+	{
+		result |= Channel->ReplicateSubobject(inventorySlot->GetItemObject() , *Bunch, *RepFlags);
+	}
+	
+	return result;
 }
 
 void UInventoryComp::SelectItem_Implementation(int32 InItemIndex)

@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
 	UItemData* DataAsset;
 
+public:
+
+	virtual bool IsSupportedForNetworking() const override { return true; }
 
 public:
 

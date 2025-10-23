@@ -19,14 +19,6 @@ public:
 	UInventoryComp();
 
 protected:
-
-	UPROPERTY()
-	TArray<UObject*> Items;
-
-	UPROPERTY(EditAnywhere, Instanced, BlueprintReadOnly)
-	TArray<TObjectPtr<UInventorySlot>> Slots;
-
-protected:
 	// EditDefaultsOnly (constant) fields
 protected:
 	// Runtime fields
@@ -37,6 +29,12 @@ protected:
 
 	UPROPERTY(ReplicatedUsing=OnRep_CurrentActorItem)
 	int32 CurrentItemIndex {-1};
+
+	UPROPERTY()
+	TArray<UItemObject*> Items;
+
+	UPROPERTY(EditAnywhere, Replicated, Instanced, BlueprintReadOnly)
+	TArray<TObjectPtr<UInventorySlot>> Slots;
 protected:
 	// Server only fields
 
@@ -57,15 +55,14 @@ protected:
 public:
 	// override from Unreal Framework
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-public:
-	// override from Parent
+	virtual bool ReplicateSubobjects(class UActorChannel* Channel, class FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 public:
 	// override from Interfaces
 public:
 	// public functions
 
 	UFUNCTION(BlueprintCallable)
-	bool AddItem(UObject* Item);
+	bool AddItem(UItemObject* InItem);
 
 	UFUNCTION(BlueprintCallable, Category="Setters")
 	bool AddItemToActiveSlot(UItemObject* InItem);
@@ -74,7 +71,7 @@ public:
 	void SelectItem(int32 InItemIndex);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	TArray<UObject*> GetItems() const { return Items;}
+	const TArray<UItemObject*>& GetItems() const { return Items;}
 public:
 	// const getters
 public:
