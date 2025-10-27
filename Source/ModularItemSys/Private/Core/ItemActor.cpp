@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Core/DroppedItem.h"
+#include "Core/ItemActor.h"
 
 #include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
@@ -9,7 +9,7 @@
 #include "Data/ItemData.h"
 
 
-ADroppedItem::ADroppedItem()
+AItemActor::AItemActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -28,7 +28,7 @@ ADroppedItem::ADroppedItem()
 #endif
 }
 
-void ADroppedItem::LoadMeshSync()
+void AItemActor::LoadMeshSync()
 {
 	if (Item && Item->GetDataAsset())
 	{
@@ -36,14 +36,14 @@ void ADroppedItem::LoadMeshSync()
 	}
 }
 
-void ADroppedItem::BeginPlay()
+void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 
 	LoadMeshSync();
 }
 
-UItemObject* ADroppedItem::GetItemObject() const
+UItemObject* AItemActor::GetItemObject() const
 {
 	return Item;
 }

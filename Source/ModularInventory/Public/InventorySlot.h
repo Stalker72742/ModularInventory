@@ -24,12 +24,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FGameplayTag SlotTag;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, Replicated, BlueprintReadWrite)
 	UItemObject* SlotItem;
 
 public:
 
 	virtual bool IsSupportedForNetworking() const override { return true; }
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 

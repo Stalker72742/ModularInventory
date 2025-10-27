@@ -6,9 +6,10 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComp.generated.h"
 
-
 class UItemObject;
 class UInventorySlot;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSelectedActor, AActor*, InActor);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class MODULARINVENTORY_API UInventoryComp : public UActorComponent
@@ -60,7 +61,6 @@ public:
 	// override from Interfaces
 public:
 	// public functions
-
 	UFUNCTION(BlueprintCallable)
 	bool AddItem(UItemObject* InItem);
 
@@ -76,4 +76,7 @@ public:
 	// const getters
 public:
 	// event dispatchers
+
+	UPROPERTY(BlueprintAssignable)
+	FOnSelectedActor OnSelectedActor;
 };

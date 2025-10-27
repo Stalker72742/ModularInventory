@@ -4,6 +4,8 @@
 #include "InventoryComp.h"
 
 #include "InventorySlot.h"
+#include "Core/ItemActor.h"
+#include "Data/ItemData.h"
 #include "Engine/ActorChannel.h"
 #include "Net/UnrealNetwork.h"
 #include "ModularItemSys/Public/Core/ItemObject.h"
@@ -39,21 +41,21 @@ bool UInventoryComp::AddItemToActiveSlot(UItemObject* InItem)
 
 void UInventoryComp::OnRep_CurrentActorItem()
 {
-	/*FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	CurrentItemActor = GetWorld()->SpawnActor<AItemActor>();
-
-	UItemDataAsset* itemData = Items[CurrentItemIndex]->ItemDataAsset;
-	USkeletalMesh* itemMesh = itemData->ItemSkeletalMesh.LoadSynchronous();
-		
-	if(itemMesh)
+	if (Slots.Num() > CurrentItemIndex && Slots[CurrentItemIndex]->GetItemObject())
 	{
-		CurrentItemActor->GetComponentByClass<USkeletalMeshComponent>()->SetSkeletalMeshAsset(itemMesh);
-	}
+		FActorSpawnParameters spawnParams;
+		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		CurrentItemActor = GetWorld()->SpawnActor<AItemActor>();
 
-	FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
-		
-	CurrentItemActor->AttachToComponent(GetOwner()->GetComponentByClass<USkeletalMeshComponent>(), AttachmentRules, "weapon_r");*/
+		UItemData* itemData = Slots[CurrentItemIndex]->GetItemObject()->GetDataAsset();
+
+		if(USkeletalMesh* itemMesh = itemData->ItemMesh.LoadSynchronous())
+		{
+			CurrentItemActor->GetComponentByClass<USkeletalMeshComponent>()->SetSkeletalMeshAsset(itemMesh);
+		}
+
+		OnSelectedActor.Broadcast(CurrentItemActor);
+	}
 }
 
 void UInventoryComp::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -71,7 +73,11 @@ bool UInventoryComp::ReplicateSubobjects(class UActorChannel* Channel, class FOu
 
 	for (UInventorySlot* inventorySlot : Slots)
 	{
-		result |= Channel->ReplicateSubobject(inventorySlot->GetItemObject() , *Bunch, *RepFlags);
+		if (inventorySlot && inventorySlot->GetItemObject())
+		{
+			result |= Channel->ReplicateSubobject(inventorySlot, *Bunch, *RepFlags);
+			result |= Channel->ReplicateSubobject(inventorySlot->GetItemObject(), *Bunch, *RepFlags);
+		}
 	}
 	
 	return result;
@@ -79,29 +85,23 @@ bool UInventoryComp::ReplicateSubobjects(class UActorChannel* Channel, class FOu
 
 void UInventoryComp::SelectItem_Implementation(int32 InItemIndex)
 {
-	/*if (Items.Num() > InItemIndex)
+	if (Slots.Num() > InItemIndex && Slots[InItemIndex] && Slots[InItemIndex]->GetItemObject())
 	{
 		CurrentItemIndex = InItemIndex;
 		
-		/*FActorSpawnParameters spawnParams;
+		FActorSpawnParameters spawnParams;
 		spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		CurrentItemActor = GetWorld()->SpawnActor<AItemActor>();
 
-		
+		UItemData* itemData = Slots[InItemIndex]->GetItemObject()->GetDataAsset();
 
-		UItemDataAsset* itemData = Items[InItemIndex]->ItemDataAsset;#1#
-
-		USkeletalMesh* itemMesh = itemData->ItemSkeletalMesh.LoadSynchronous();
-		
-		if(itemMesh)
+		if(USkeletalMesh* itemMesh = itemData->ItemMesh.LoadSynchronous())
 		{
 			CurrentItemActor->GetComponentByClass<USkeletalMeshComponent>()->SetSkeletalMeshAsset(itemMesh);
 		}
 
-		FAttachmentTransformRules AttachmentRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false);
-		
-		CurrentItemActor->AttachToComponent(GetOwner()->GetComponentByClass<USkeletalMeshComponent>(), AttachmentRules, "weapon_r");
-	}*/
+		OnSelectedActor.Broadcast(CurrentItemActor);
+	}
 }
 
 void UInventoryComp::Multicast_SelectNewItem_Implementation(int32 InItemIndex)

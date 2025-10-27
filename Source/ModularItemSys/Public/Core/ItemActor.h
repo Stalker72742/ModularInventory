@@ -4,17 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "DroppedItem.generated.h"
+#include "ItemActor.generated.h"
 
 class UItemObject;
 
 UCLASS()
-class MODULARITEMSYS_API ADroppedItem : public AActor
+class MODULARITEMSYS_API AItemActor : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	ADroppedItem();
+	AItemActor();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Component)
 	USceneComponent* Root;

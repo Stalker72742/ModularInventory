@@ -20,15 +20,19 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data")
-	UItemData* DataAsset;
+	UPROPERTY(EditAnywhere, Replicated, BlueprintReadOnly, Category = "Data")
+	TSoftObjectPtr<UItemData> DataAsset;
 
 public:
 
 	virtual bool IsSupportedForNetworking() const override { return true; }
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = Getter)
-	UItemData* GetDataAsset() const { return DataAsset; }
+	UItemData* GetDataAsset() const { return DataAsset.LoadSynchronous(); }
+
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = Getter)
+	void SetItemDataAsset(TSoftObjectPtr<UItemData> InItemDataAsset) { DataAsset = InItemDataAsset; }
 };
