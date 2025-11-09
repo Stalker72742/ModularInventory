@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "ItemType.h"
 #include "StructUtils/InstancedStruct.h"
 #include "ItemData.generated.h"
 
@@ -84,4 +85,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category="ItemParams")
 	TArray<UItemActionBase*> Actions;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Anims")
+	EItemType ItemType {EItemType::None};
 };

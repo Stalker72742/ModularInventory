@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InventorySlot.h"
 #include "Components/ActorComponent.h"
 #include "InventoryComp.generated.h"
 
@@ -47,6 +48,13 @@ protected:
 	void OnRep_CurrentActorItem();
 protected:
 	// functions: Service functions
+
+	UFUNCTION()
+	virtual void UnbindFromInputComp();
+	
+	UFUNCTION()
+	virtual void BindCurrentItemToInput();
+	
 protected:
 	// functions: RPC
 
@@ -72,6 +80,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	const TArray<UItemObject*>& GetItems() const { return Items;}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category="Getter")
+	FORCEINLINE UItemObject* GetCurrentItem() const;
+		
 public:
 	// const getters
 public:

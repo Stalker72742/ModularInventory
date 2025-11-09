@@ -27,7 +27,8 @@ public class ModularInventory : ModuleRules
 			{
 				"Core",
 				"GameplayTags",
-				"ModularItemSys"
+				"ModularItemSys",
+				"EnhancedInput"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

@@ -20,6 +20,8 @@ AItemActor::AItemActor()
 	ItemMesh = CreateDefaultSubobject<USkeletalMeshComponent>("ItemMesh");
 	ItemMesh->SetupAttachment(GetRootComponent());
 
+	ItemMesh->SetRelativeRotation(FRotator(0, -90, 0));
+
 #if WITH_EDITOR
 
 	Billboard = CreateDefaultSubobject<UBillboardComponent>("Billboard");

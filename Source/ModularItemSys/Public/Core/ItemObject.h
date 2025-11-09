@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ItemObject.generated.h"
 
+struct FInputActionInstance;
 class UItemData;
 /**
  * 
@@ -35,4 +36,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = Getter)
 	void SetItemDataAsset(TSoftObjectPtr<UItemData> InItemDataAsset) { DataAsset = InItemDataAsset; }
+
+	UFUNCTION()
+	virtual void OnInput(const FInputActionInstance& Instance);
 };

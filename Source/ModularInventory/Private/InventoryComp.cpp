@@ -3,6 +3,7 @@
 
 #include "InventoryComp.h"
 
+#include "EnhancedInputComponent.h"
 #include "InventorySlot.h"
 #include "Core/ItemActor.h"
 #include "Data/ItemData.h"
@@ -39,6 +40,15 @@ bool UInventoryComp::AddItemToActiveSlot(UItemObject* InItem)
 	return false;
 }
 
+UItemObject* UInventoryComp::GetCurrentItem() const
+{
+	if (Slots.Num() > CurrentItemIndex && CurrentItemIndex >= 0 && Slots[CurrentItemIndex] && Slots[CurrentItemIndex].Get())
+	{
+		return Slots[CurrentItemIndex].Get()->GetItemObject();
+	}
+	return nullptr; 
+}
+
 void UInventoryComp::OnRep_CurrentActorItem()
 {
 	if (Slots.Num() > CurrentItemIndex && Slots[CurrentItemIndex]->GetItemObject())
@@ -54,7 +64,33 @@ void UInventoryComp::OnRep_CurrentActorItem()
 			CurrentItemActor->GetComponentByClass<USkeletalMeshComponent>()->SetSkeletalMeshAsset(itemMesh);
 		}
 
+		BindCurrentItemToInput();
+
 		OnSelectedActor.Broadcast(CurrentItemActor);
+	}
+}
+
+void UInventoryComp::UnbindFromInputComp()
+{
+	
+}
+
+void UInventoryComp::BindCurrentItemToInput()
+{
+	auto inputComp = GetOwner()->GetComponentByClass<UEnhancedInputComponent>();
+	if (inputComp)
+	{
+		auto item = Slots[CurrentItemIndex]->GetItemObject();
+		TArray<UInputAction*> inputs;
+		item->GetDataAsset()->BindableActions.GetKeys(inputs);
+
+		for (UInputAction* Input : inputs)
+		{
+			if (Input)
+			{
+				inputComp->BindAction(Input, ETriggerEvent::Triggered, item, &UItemObject::OnInput);
+			}
+		}
 	}
 }
 

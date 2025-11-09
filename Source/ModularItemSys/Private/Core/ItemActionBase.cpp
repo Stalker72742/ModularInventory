@@ -7,3 +7,8 @@ UItemActionBase::UItemActionBase(const FObjectInitializer& ObjectInitializer) : 
 {
 	
 }
+
+void UItemActionBase::Execute(UObject* InExecuteInstigator)
+{
+	OnExecute(InExecuteInstigator);	
+}
