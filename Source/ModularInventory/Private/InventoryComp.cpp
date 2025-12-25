@@ -46,6 +46,7 @@ UItemObject* UInventoryComp::GetCurrentItem() const
 	{
 		return Slots[CurrentItemIndex].Get()->GetItemObject();
 	}
+	
 	return nullptr; 
 }
 

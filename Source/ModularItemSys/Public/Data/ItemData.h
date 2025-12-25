@@ -85,7 +85,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category="ItemParams")
 	TArray<UItemActionBase*> Actions;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Anims")
-	EItemType ItemType {EItemType::None};
 };
